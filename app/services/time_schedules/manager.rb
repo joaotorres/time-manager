@@ -2,8 +2,9 @@
 
 module TimeSchedules
   class Manager
-    def initialize(comparison_time: Time.zone.now)
+    def initialize(contact_center, comparison_time: Time.zone.now)
       self.comparison_time = comparison_time
+      self.contact_center = contact_center
     end
 
     def open?
@@ -19,7 +20,7 @@ module TimeSchedules
     end
 
     def weekday_hours
-      wday = TimeSchedule.where(day: weekdays).first
+      wday = contact_center.time_schedules.where(day: weekdays).first
 
       return 'closed' if wday.nil?
 
@@ -27,7 +28,7 @@ module TimeSchedules
     end
 
     def weekend_hours
-      wend = TimeSchedule.where(day: weekend_days).first
+      wend = contact_center.time_schedules.where(day: weekend_days).first
 
       return 'closed' if wend.nil?
 
@@ -36,10 +37,10 @@ module TimeSchedules
 
     private
 
-    attr_accessor :comparison_time, :time_schedule
+    attr_accessor :comparison_time, :time_schedule, :contact_center
 
     def time_schedules
-      TimeSchedule.where(day: comparison_wday)
+      contact_center.time_schedules.where(day: comparison_wday)
     end
 
     def time_schedule_open?

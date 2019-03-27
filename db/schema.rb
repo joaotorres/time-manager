@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_27_115326) do
+ActiveRecord::Schema.define(version: 2019_03_27_130014) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,9 @@ ActiveRecord::Schema.define(version: 2019_03_27_115326) do
     t.boolean "closed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "contact_center_id"
+    t.index ["contact_center_id"], name: "index_time_schedules_on_contact_center_id"
   end
 
+  add_foreign_key "time_schedules", "contact_centers"
 end
